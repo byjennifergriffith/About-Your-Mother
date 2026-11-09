@@ -1,0 +1,12 @@
+{
+  "name": "About-Your-Mother",
+  "private": true,
+  "type": "module",
+  "description": "Builds private episode resource pages for About Your Mother guests from Airtable, published on GitHub Pages.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "node build.mjs",
+    "build:dry": "node build.mjs --dry",
+    "preview": "node build.mjs --sample"
+  }
+}

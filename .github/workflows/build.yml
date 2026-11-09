@@ -1,0 +1,53 @@
+name: Build guest pages
+
+on:
+  repository_dispatch:
+    types: [airtable-publish]
+  workflow_dispatch:
+  schedule:
+    - cron: '23 10 * * *'   # daily safety net, 10:23 UTC
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-guest-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Work out the site URL
+        id: site
+        run: |
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO="${{ github.event.repository.name }}"
+          echo "url=${SITE_URL_OVERRIDE:-https://${OWNER}.github.io/${REPO}}" >> "$GITHUB_OUTPUT"
+        env:
+          SITE_URL_OVERRIDE: ${{ vars.SITE_URL }}
+
+      - name: Build pages from Airtable
+        run: node build.mjs
+        env:
+          AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
+          AIRTABLE_BASE_ID: ${{ vars.AIRTABLE_BASE_ID || 'app8uXOO7hrf601Tx' }}
+          SITE_URL: ${{ steps.site.outputs.url }}
+
+      - name: Commit and push
+        run: |
+          git config user.name "aym-pages-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A docs
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Build guest pages ($(date -u +%Y-%m-%d\ %H:%M) UTC)"
+            git push
+          fi

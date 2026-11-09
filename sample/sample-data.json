@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "sample-guest",
+    "mode": "guest",
+    "guestName": "Maren Ellis",
+    "showName": "AYM - Maren Ellis",
+    "title": "The Letters My Mother Never Sent with Maren Ellis",
+    "description": "Maren Ellis grew up believing her mother was a private person. After her mother's death she found a shoebox of unsent letters that told a very different story. In this episode of About Your Mother, Maren and Jennifer talk about what we inherit without being told, and what it takes to finally say it out loud.",
+    "releaseDate": "2026-11-18",
+    "season": 6,
+    "episodeNumber": 58,
+    "showPageUrl": "https://byjennifergriffith.com/category/podcast",
+    "spotifyUrl": "",
+    "appleUrl": "https://podcasts.apple.com/us/podcast/about-your-mother/id1522701752",
+    "youtubeUrl": "",
+    "embedCode": "",
+    "mp3Url": "https://drive.google.com/",
+    "driveUrl": "https://drive.google.com/",
+    "guestBio": "Maren Ellis is a writer and hospice chaplain based in Bozeman, Montana. Her essays have appeared in The Sun and Orion.",
+    "note": "",
+    "guestWebsite": "https://example.com",
+    "guestInstagram": "marenellis",
+    "headshot": { "path": "../sample/headshot.jpg", "title": "Maren Ellis" },
+    "cover": { "path": "../sample/cover.jpg", "title": "Episode cover" },
+    "quotes": [
+      { "text": "I kept waiting for permission to tell the story. It turns out the permission was in the shoebox the whole time.", "speaker": "Maren Ellis", "timestamp": "14:22", "pillar": "The story you were handed", "starred": true },
+      { "text": "She wasn't private. She was protecting us from a grief she never got to finish.", "speaker": "Maren Ellis", "timestamp": "22:05", "pillar": "Grief at the table", "starred": true },
+      { "text": "Ask them now. Not because the answers will be easy, but because one day the only answers left will be the ones you make up.", "speaker": "Maren Ellis", "timestamp": "41:50", "pillar": "Ask them now", "starred": false },
+      { "text": "Your mother's life before she became your mom holds keys to your identity, more than you think.", "speaker": "Jennifer Griffith", "timestamp": "09:31", "pillar": "The story you were handed", "starred": false }
+    ],
+    "captions": [
+      { "platform": "Instagram", "text": "After my mom died I found a shoebox of letters she never sent. I spent a year deciding whether I was allowed to read them.\n\nI talked with @byjennifergriffith on About Your Mother about what was inside, and what it taught me about the woman she was before she was mine.\n\nLink in bio, or search About Your Mother wherever you listen.", "hashtags": "#AboutYourMother #motherdaughter #memoir #grief" },
+      { "platform": "LinkedIn", "text": "I don't usually post about my personal life here, but this conversation changed how I think about the stories we inherit at work and at home.\n\nI joined Jennifer Griffith on About Your Mother to talk about my mother's unsent letters, and what happens when the people who shaped us never got to tell their own story.\n\nIf you've ever wondered who your parents were before they were your parents, this one is for you.", "hashtags": "" }
+    ],
+    "assets": [
+      { "path": "../sample/cover.jpg", "title": "Square quote card 1" },
+      { "path": "../sample/cover.jpg", "title": "Square quote card 2" },
+      { "path": "../sample/headshot.jpg", "title": "Story graphic" }
+    ],
+    "links": [
+      { "title": "Full transcript (Google Doc)", "url": "https://docs.google.com/" }
+    ]
+  }
+]
