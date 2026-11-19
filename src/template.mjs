@@ -49,6 +49,35 @@ function nl2p(text) {
   return String(text || '').trim().split(/\n{2,}/).map(p => `<p>${esc(p).replace(/\n/g, '<br>')}</p>`).join('');
 }
 
+// Airtable rich text arrives as light Markdown. Render links, bold, italics, headings and lists; escape everything else.
+function inlineMd(s) {
+  let out = esc(s);
+  out = out.replace(/\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^)\s]+)\)/g, (m, t, u) => `<a href="${u}" target="_blank" rel="noopener">${t}</a>`);
+  out = out.replace(/(^|[\s(])((?:https?:\/\/)[^\s<)]+)/g, (m, p, u) => `${p}<a href="${u}" target="_blank" rel="noopener">${u}</a>`);
+  out = out.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[\s(])\*(?!\s)([^*]+?)\*(?=[\s.,;:!?)]|$)/g, '$1<em>$2</em>');
+  out = out.replace(/(^|[\s(])_(?!\s)([^_]+?)_(?=[\s.,;:!?)]|$)/g, '$1<em>$2</em>');
+  return out;
+}
+export function md(text) {
+  const lines = String(text || '').replace(/\r/g, '').trim().split('\n');
+  const html = [];
+  let para = [], list = null;
+  const flushPara = () => { if (para.length) { html.push(`<p>${para.map(inlineMd).join('<br>')}</p>`); para = []; } };
+  const flushList = () => { if (list) { html.push(`<${list.tag}>${list.items.map(i => `<li>${inlineMd(i)}</li>`).join('')}</${list.tag}>`); list = null; } };
+  for (const raw of lines) {
+    const line = raw.trim();
+    const ul = line.match(/^[-*•]\s+(.*)/), ol = line.match(/^\d+[.)]\s+(.*)/), h = line.match(/^#{1,6}\s+(.*)/);
+    if (!line) { flushPara(); flushList(); continue; }
+    if (ul || ol) { flushPara(); const tag = ul ? 'ul' : 'ol'; if (!list || list.tag !== tag) { flushList(); list = { tag, items: [] }; } list.items.push((ul || ol)[1]); continue; }
+    flushList();
+    if (h) { flushPara(); html.push(`<h3>${inlineMd(h[1])}</h3>`); continue; }
+    para.push(line);
+  }
+  flushPara(); flushList();
+  return html.join('');
+}
+
 function copyBtn(text, label = 'Copy') {
   return `<button class="btn sm copy" type="button" data-copy="${esc(text)}">${label}</button>`;
 }
@@ -97,7 +126,7 @@ export function renderPage(ep, site, opts = {}) {
       <div class="wrap">
         <span class="eyebrow">Listen</span>
         <h2>${isGuest ? 'Your episode is live' : 'The episode'}</h2>
-        ${ep.description ? `<div class="lead">${nl2p(ep.description)}</div>` : ''}
+        ${ep.description ? `<div class="lead rich">${md(ep.description)}</div>` : ''}
         ${embeds.map(e => `<div class="embed" aria-label="${esc(e.label)} player">${e.html}</div>`).join('')}
         ${embedCodes.length ? `<h3 style="margin-top:44px">Embed codes</h3><p class="muted small">Paste into a website, newsletter, or Substack post.</p>` : ''}
         ${embedCodes.map(e => `<div class="codebox"><pre>${esc(e.code)}</pre>${copyBtn(e.code)}</div>`).join('')}

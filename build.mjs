@@ -48,7 +48,6 @@ const F = {
 
 const log = (...a) => console.log('[build]', ...a);
 const slugify = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
-const stripMd = s => String(s || '').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_`#>]+/g, '').trim();
 
 // ---------- Airtable ----------
 async function at(pathname, init = {}) {
@@ -135,7 +134,7 @@ async function normalize(rec, ctx) {
 
   return {
     id: rec.id, slug, mode, guestName, showName: f[F.ep.name],
-    title: f[F.ep.title] || '', description: stripMd(f[F.ep.description]), releaseDate: f[F.ep.release] || '',
+    title: f[F.ep.title] || '', description: (f[F.ep.description] || '').trim(), releaseDate: f[F.ep.release] || '',
     season: f[F.ep.season], episodeNumber: f[F.ep.number],
     showPageUrl: f[F.ep.showPage] || '', spotifyUrl: f[F.ep.spotify] || '', appleUrl: f[F.ep.apple] || '', youtubeUrl: f[F.ep.youtube] || '',
     embedCode: (f[F.ep.embed] || '').trim(), mp3Url: f[F.ep.mp3] || '', driveUrl: f[F.ep.drive] || '',
